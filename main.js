@@ -3,6 +3,14 @@ var http = require("http");
 var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
+var fs = require('fs')
+// IBM Alchemy Language
+var watson = require('watson-developer-cloud');
+var credentials = JSON.parse(fs.readFileSync('bluemix.auth', 'utf8'));  // Hide file from git
+var API_KEY = credentials.api_key;
+var alchemy_language = watson.alchemy_language({
+  api_key: API_KEY
+})
 app.use(bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
@@ -31,6 +39,21 @@ app.get('/', function (req, res) {
     else {
       console.log('Sent:', file);
     }
+  });
+})
+
+app.post('/analyze', function(req,res){
+  var tweets = req.body.tweets.collection
+console.log('Analyzing Tweets: \n' + tweets)
+  var parameters = {
+    text: tweets
+  };
+
+  alchemy_language.emotion(parameters, function (err, response) {
+    if (err)
+      console.log('error:', err);
+    else
+      res.send(JSON.stringify(response, null, 2));
   });
 })
 

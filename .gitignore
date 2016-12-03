@@ -1,4 +1,10 @@
+# IDE's
 .idea/
 .idea/*
+
+# Dependencies
 node_modules/
 bower_components/
+
+# Authentication files
+*.auth/
