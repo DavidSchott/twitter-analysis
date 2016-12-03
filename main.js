@@ -4,13 +4,21 @@ var express = require('express')
 var app = express()
 var bodyParser = require('body-parser')
 var fs = require('fs')
+
+// Twitter
+var Twitter = require('twitter');
+var credentials_twitter = JSON.parse(fs.readFileSync('twitter.auth', 'utf8'));  // Hide file from git
+var client = new Twitter(credentials_twitter)
+
 // IBM Alchemy Language
 var watson = require('watson-developer-cloud');
-var credentials = JSON.parse(fs.readFileSync('bluemix.auth', 'utf8'));  // Hide file from git
-var API_KEY = credentials.api_key;
+var credentials_alchemy = JSON.parse(fs.readFileSync('bluemix.auth', 'utf8'));  // Hide file from git
+var API_KEY = credentials_alchemy.api_key;
 var alchemy_language = watson.alchemy_language({
   api_key: API_KEY
 })
+
+// JSON parsing
 app.use(bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
@@ -42,20 +50,37 @@ app.get('/', function (req, res) {
   });
 })
 
-app.post('/analyze', function(req,res){
-  var tweets = req.body.tweets.collection
-console.log('Analyzing Tweets: \n' + tweets)
-  var parameters = {
-    text: tweets
-  };
+app.get('/analyze', function(req,res){
+  var user = req.query.user
+  var limit = req.query.limit
+  client.get('search/tweets', {q: 'from:'+user, count:limit}, function(error, tweets, response) {
+    //console.log(tweets);
+    // Join tweets:
+    var tweets_joined = tweets.statuses.filter(function(tweet){
+      return tweet.text.length > 10
+    }).map(function(tweet){
+      return tweet.text
+    }).join('\n');
 
-  alchemy_language.emotion(parameters, function (err, response) {
-    if (err)
-      console.log('error:', err);
-    else
-      res.send(JSON.stringify(response, null, 2));
+    console.log("Analyzing tweets:\n" + tweets_joined);
+    var parameters = {
+      text: tweets_joined
+    };
+
+    alchemy_language.emotion(parameters, function (err, response) {
+      if (err){
+        console.log('error:', err);
+        err.tweets = tweets_joined
+        res.send(JSON.stringify(err, null, 2));
+      }
+      else{
+        response.tweets = tweets_joined
+        res.send(JSON.stringify(response, null, 2));
+        }
+    });
+
   });
-})
+});
 
 app.listen(5000, function () {
   console.log('listening on port 5000!')

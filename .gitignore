@@ -8,3 +8,6 @@ bower_components/
 
 # Authentication files
 *.auth
+
+# Node-logs
+npm-debug.log
