@@ -13,10 +13,7 @@ var client = new Twitter(credentials_twitter)
 // IBM Alchemy Language
 var watson = require('watson-developer-cloud');
 var credentials_alchemy = JSON.parse(fs.readFileSync('bluemix.auth', 'utf8'));  // Hide file from git
-var API_KEY = credentials_alchemy.api_key;
-var alchemy_language = watson.alchemy_language({
-  api_key: API_KEY
-})
+var alchemy_language = watson.alchemy_language(credentials_alchemy)
 
 // JSON parsing
 app.use(bodyParser.json() );       // to support JSON-encoded bodies
@@ -74,8 +71,8 @@ app.get('/analyze', function(req,res){
         res.send(JSON.stringify(err, null, 2));
       }
       else{
-        response.tweets = tweets_joined
-        res.send(JSON.stringify(response, null, 2));
+        response.docEmotions.tweets = tweets_joined
+        res.send(JSON.stringify(response.docEmotions, null, 2));
         }
     });
 
