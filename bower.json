@@ -1,0 +1,27 @@
+{
+  "name": "portfolio3",
+  "description": "Twitter sentiment analysis",
+  "main": "main.js",
+  "authors": [
+    "David Schott",
+    "Emily Anderson"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "twitter",
+    "watson",
+    "IBM",
+    "AlchemyLanguage"
+  ],
+  "homepage": "https://github.com/isu-cs319/portfolio3",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "^3.3.7"
+  }
+}
