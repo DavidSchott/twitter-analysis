@@ -106,6 +106,8 @@ function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
                 if (!tweetEmotions.hasOwnProperty('error')){
                     visualizeEmotions(tweetEmotions);
                 }
+		tweets = tweetEmotions.tweets;
+		console.log(tweets);
             })
             .fail(function (xhr) {
                 alert("Error fetching emotions from " + userName);
@@ -141,4 +143,13 @@ function insertUserInfo() {
     document.getElementById("user-followers-count").innerHTML = user.followers_count;
     document.getElementById("user-friends-count").innerHTML = user.friends_count;
     document.getElementById("user-favourites-count").innerHTML = user.favourites_count;
+}
+
+function insertTweets() {
+    var text = "";
+    for (var i=0; i<tweets.length; i++) {
+	text += tweets[i] + "<br><br>";
+    }
+    document.getElementById("tweets-heading").innerHTML = user.name + "'s tweets:";
+    document.getElementById("tweets").innerHTML = text;
 }
