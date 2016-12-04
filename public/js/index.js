@@ -6,13 +6,14 @@ $(document).ready(function () {
   e.preventDefault()
   $(this).tab('show')
 })
+$('.results').hide();
     console.log("ready!");
 });
 google.charts.load('current', { 'packages': ['corechart'] });
 var user;
 var tweetEmotions;
-
-function checkRequest(userName, tweetLimit) {
+// TODO: add validation of hashtags
+function checkRequest(userName, tweetLimit,hashTags,resolve,reject) {
     if (userName.length < 1) {
         displayAlert('Username invalid');
         return false;
@@ -21,27 +22,23 @@ function checkRequest(userName, tweetLimit) {
         displayAlert('Tweet Limit must be in the range 10 < x < 100.');
         return false;
     }
-    // TODO: THIS DOESN'T WORK! Have userName and tweet, check users existence
     var prms = $.get('/user',{ user: userName})
         .done(function (data){
             data = JSON.parse(data);
             if (data.hasOwnProperty('errors')){
-                displayAlert("Code: "+data.errors[0].code + " " + data.errors[0].message);
-                return false;
+                reject("Code: "+data.errors[0].code + " " + data.errors[0].message);
             }
             else{
-            user = data;
-            return true;
+                user = data;
+                resolve(data);
             }
         })
         .fail(function(xhr){
             console.log("Error fetching user",xhr);
             displayAlert("Connection error");
+            reject("Connection error");
             return false;
         })
-    return $.when(prms).done(function (exists){
-        return exists;
-    })
 }
 
 function displayAlert(msg) {
@@ -52,34 +49,34 @@ function hideAlert() {
     $('#error-alert').hide();
 }
 
-function dispatchRequests(userName,tweetLimit){
-        /*var p1 = new Promise(
+function dispatchRequests(userName,tweetLimit,hashTags){
+        var p1 = new Promise(
             function(resolve,reject){
-                
+                checkRequest(userName, tweetLimit,hashTags,resolve,reject);
             }
         )
-        p1.then(function(val){
+        p1.then(function(userData){
+            console.log(userData);
             // User exists
+            hideAlert();
+            fetchTweetsEmotions(userName,tweetLimit,hashTags);
+            fetchTweetsKeywords(userName,tweetLimit,hashTags);
+            // Display results
+            $('.results').show();
         })
     .catch(
         // Log the rejection reason
         function(reason) {
-            console.log('Handle rejected promise ('+reason+') here.');
-        });*/
-
-    if (checkRequest(userName, tweetLimit)) {
-        hideAlert();
-        fetchTweetsEmotions(userName,tweetLimit);
-        fetchTweetsKeywords(userName,tweetLimit);
-    }
-    $('#tabs').show();
+            console.log(reason);
+            displayAlert(reason);
+        });
 }
 
-function fetchTweetsKeywords(userName,tweetLimit){
+function fetchTweetsKeywords(userName,tweetLimit,hashTags){
     console.log("Fetching interesting keywords from " + userName + " tweets.");
 }
 
-function fetchTweetsEmotions(userName, tweetLimit) {
+function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
         console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit })
             .done(function (data) {
