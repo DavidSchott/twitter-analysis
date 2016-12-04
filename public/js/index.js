@@ -2,8 +2,8 @@
  * Created by schott on 02.12.16.
  */
 $(document).ready(function () {
-    console.log("ready!");
     google.charts.load('current', { 'packages': ['corechart'] });
+    console.log("ready!");
 });
 var analyzedProfiles = [];
 
@@ -33,9 +33,8 @@ function fetchTweetsEmotions(userName, tweetLimit) {
         console.log("Analyzing " + tweetLimit + " tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit })
             .done(function (data) {
-                console.log(data);
-                analyzedProfiles.push(data);
-                visualizeEmotions(data);
+                analyzedProfiles.push(JSON.parse(data));
+                visualizeEmotions(JSON.parse(data));
             })
             .fail(function (xhr) {
                 alert("Error fetching tweets from " + userName);
@@ -45,24 +44,14 @@ function fetchTweetsEmotions(userName, tweetLimit) {
 }
 // TODO: How to get data?
 function visualizeEmotions(emotionsResponse) {
-    //google.charts.setOnLoadCallback(function(emotionsResponse){
     var data = google.visualization.arrayToDataTable([
         ['Emotion', 'Score'],
-        ['Anger', emotionsResponse.anger],
-        ['Disgust', emotionsResponse.disgust],
-        ['Fear', emotionsResponse.fear],
-        ['Joy', emotionsResponse.joy],
-        ['Sadness', emotionsResponse.sadness]
+        ['Anger', parseFloat(emotionsResponse.anger)],
+        ['Disgust', parseFloat(emotionsResponse.disgust)],
+        ['Fear', parseFloat(emotionsResponse.fear)],
+        ['Joy', parseFloat(emotionsResponse.joy)],
+        ['Sadness', parseFloat(emotionsResponse.sadness)]
     ]);
-
-    /*var data = google.visualization.arrayToDataTable([
-      ['Task', 'Hours per Day'],
-      ['Work',     11],
-      ['Eat',      2],
-      ['Commute',  2],
-      ['Watch TV', 2],
-      ['Sleep',    7]
-    ]);*/
 
     var options = {
         title: 'Sentiment Analysis of ' + emotionsResponse.userName + ' tweets'
@@ -71,5 +60,4 @@ function visualizeEmotions(emotionsResponse) {
     var chart = new google.visualization.PieChart(document.getElementById('test'));
 
     chart.draw(data, options);
-    //});
 }
