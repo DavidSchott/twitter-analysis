@@ -1,45 +1,47 @@
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Portfolio 3: Twitter Sentiment Analysis</title>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/index.css"/>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/index.css" />
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- Google Charts -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </head>
+
 <body>
-<div class="container">
-    <div class="row">
-    <!-- Twitter Panel -->
-    <div id="selectbox" style="margin-top:50px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="panel-title text-center">Twitter Sentiment Analysis</div>
-            </div>
-            <div style="padding-top:30px" class="panel-body">
-                <div style="display:none;" id="error-alert" class="alert alert-danger col-sm-12"></div>
-                    <div style="margin-bottom: 25px" class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input type="text" placeholder="Twitter Username" id="user" name="user"
-                               class="form-control" required/>
-                        <input type="number" id="limit" name="limit" placeholder="# Tweets" max="100" min="10" step="1" required/>
+    <div class="container">
+        <div class="row">
+            <!-- Twitter Panel -->
+            <div id="selectbox" style="margin-top:50px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <div class="panel-title text-center">Twitter Sentiment Analysis</div>
                     </div>
-                    <div style="margin-top:10px" class="form-group">
-                        <div class="col-sm-12 btn-group">
-                            <button type="button" value="Analyze!" class="btn btn-default" onclick="fetchTweetsEmotions($('#user').val(),$('#limit').val())">Analyze!</button>
+                    <div style="padding-top:30px" class="panel-body">
+                        <div style="display:none;" id="error-alert" class="alert alert-danger col-sm-12"></div>
+                        <div style="margin-bottom: 25px" class="input-group">
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                            <input type="text" placeholder="Twitter Username" id="user" name="user" class="form-control" required/>
+                            <input type="number" id="limit" name="limit" placeholder="# Tweets" max="100" min="10" step="1" required/>
+                        </div>
+                        <div style="margin-top:10px" class="form-group">
+                            <div class="col-sm-12 btn-group">
+                                <button type="button" value="Analyze!" class="btn btn-default" onclick="fetchTweetsEmotions($('#user').val(),$('#limit').val())">Analyze!</button>
+                            </div>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
+        <div class="row">
+            <div id="test" class="piechart"></div>
+        </div>
     </div>
-    </div>
-    <div class="row">
-<div id="test" class="piechart"></div>
-</div>
-</div>
 </body>
+
 </html>
