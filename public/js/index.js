@@ -81,7 +81,7 @@ function visualizeEmotions(emotionsResponse) {
         title: 'Emotion Analysis of ' + emotionsResponse.userName + ' tweets'
     };
 
-    var chart = new google.visualization.PieChart(document.getElementById('test'));
+    var chart = new google.visualization.PieChart(document.getElementById('emotion-chart'));
 
     chart.draw(data, options);
 }
