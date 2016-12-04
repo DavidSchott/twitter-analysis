@@ -30,7 +30,7 @@
                         </div>
                         <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-comment"></i></span>
-                        <input type="number" id="limit" name="limit" class="form-control" placeholder="# of Tweets" max="100" min="10" step="1"/>
+                        <input type="number" id="limit" name="limit" class="form-control" placeholder="# of Tweets" style="width: 150px" max="100" min="10" step="1"/>
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="hash-addon">#</span>
@@ -47,7 +47,7 @@
         </div>
         <div class="row results">
             <ul class="nav nav-tabs" role="tablist" id="tabs">
-                <li role="presentation" class="active"><a href="#user-table" aria-controls="user-table" role="tab" data-toggle="tab">User</a></li>
+                <li role="presentation" class="active"><a href="#user-table" onclick="insertUserInfo()" aria-controls="user-table" role="tab" data-toggle="tab">User</a></li>
                 <li role="presentation"><a href="#tweet-box" aria-controls="tweet-box" role="tab" data-toggle="tab">Tweets</a></li>
                 <li role="presentation"><a href="#emotion-chart" aria-controls="emotion-chart" role="tab" data-toggle="tab">Emotions Analysis</a></li>
                 <li role="presentation"><a href="#keyword-chart" aria-controls="keyword-chart" role="tab" data-toggle="tab">Keyword Sentiments</a></li>
@@ -57,7 +57,16 @@
             <div class="jumbotron col-md-12 tab-content" id="display">
                 <div role="tabpanel" id="emotion-chart" class="col-md-offset-1 col-md-10 piechart tab-pane"></div>
                 <div id="tweet-box" class="col-md-offset-1 col-md-10 tab-pane">Tweet-box HTML here</div>
-                <div id="user-table" class="col-md-offset-1 col-md-10 tab-pane active">User Info here</div>
+                <div id="user-table" class="col-md-offset-1 col-md-10 tab-pane active">
+		  <img id="user-profile-pic" style="width:100px;height:100px;">
+		  <h3 id="user-name"></h3>
+		  <h4 id="user-screen-name"></h4>
+		  <p id="user-description"> </p>
+		  <br>
+		  # followers: <p id="user-followers-count"> </p>
+		  # friends: <p id="user-friends-count"> </p>
+		  # favorites: <p id="user-favourites-count"> </p>
+		</div>
                 <div id="keyword-chart" class="col-md-offset-1 col-md-10 tab-pane">Keyword graph here</div>
             </div>
         </div>
