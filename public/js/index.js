@@ -10,7 +10,7 @@ $('.results').hide();
     console.log("ready!");
 });
 // Globals
-google.charts.load('current', { 'packages': ['corechart'] });
+google.charts.load('current', { 'packages': ['corechart', 'bar'] });
 var user;
 var tweetEmotions;
 var keyWords;
@@ -69,7 +69,7 @@ function dispatchRequests(userName,tweetLimit,hashTags){
             $('.results').show();
         })
     .catch(
-        // Log the rejection reason
+        // Log the rejection reason (user doesn't exist')
         function(reason) {
             console.log(reason);
             displayAlert(reason);
@@ -94,7 +94,31 @@ function fetchTweetsKeywords(userName,tweetLimit,hashTags){
 
 function visualizeKeywords(keywordsResponse){
     document.getElementById('keyword-chart').innerText = JSON.stringify(keywordsResponse, null,2);
-    console.log("Fetching interesting keywords from " + user + "'s tweets.");
+    /*var data = google.visualization.arrayToDataTable([
+        ["Element", "Density", { role: "style" } ],
+        ["Copper", 8.94, "#b87333"],
+        ["Silver", 10.49, "silver"],
+        ["Gold", 19.30, "gold"],
+        ["Platinum", 21.45, "color: #e5e4e2"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: user +"'s top 10 keywords sentiments",
+        width: 600,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("keyword-chart"));
+      chart.draw(view, options);*/
 }
 
 function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
