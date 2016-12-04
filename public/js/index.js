@@ -5,7 +5,8 @@ $(document).ready(function () {
     google.charts.load('current', { 'packages': ['corechart'] });
     console.log("ready!");
 });
-var analyzedProfiles = [];
+var user;
+var tweetEmotions;
 
 function checkRequest(userName, tweetLimit) {
     if (userName.length < 1) {
@@ -16,6 +17,21 @@ function checkRequest(userName, tweetLimit) {
         displayAlert('Tweet Limit must be in the range 10 < x < 100.');
         return false;
     }
+    // Have userName and tweet, check users existence
+    $.get('/user',{ user: userName})
+        .done(function (data){
+            data = JSON.parse(data);
+            if (data.hasOwnProperty('errors')){
+                displayAlert("Code: "+data.errors[0].code + " " + data.errors[0].message);
+                return false;
+            }
+            user = data;
+        })
+        .fail(function(xhr){
+            console.log("Error fetching user",xhr);
+            displayAlert("Connection error");
+            return false;
+        })
     return true;
 }
 
@@ -33,8 +49,8 @@ function fetchTweetsEmotions(userName, tweetLimit) {
         console.log("Analyzing " + tweetLimit + " tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit })
             .done(function (data) {
-                analyzedProfiles.push(JSON.parse(data));
-                visualizeEmotions(JSON.parse(data));
+                tweetEmotions = JSON.parse(data);
+                visualizeEmotions(tweetEmotions);
             })
             .fail(function (xhr) {
                 alert("Error fetching tweets from " + userName);
@@ -42,7 +58,7 @@ function fetchTweetsEmotions(userName, tweetLimit) {
             });
     }
 }
-// TODO: How to get data?
+
 function visualizeEmotions(emotionsResponse) {
     console.log("Visualizing",emotionsResponse);
     var data = google.visualization.arrayToDataTable([
@@ -55,7 +71,7 @@ function visualizeEmotions(emotionsResponse) {
     ]);
 
     var options = {
-        title: 'Sentiment Analysis of ' + emotionsResponse.userName + ' tweets'
+        title: 'Emotion Analysis of ' + emotionsResponse.userName + ' tweets'
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('test'));
