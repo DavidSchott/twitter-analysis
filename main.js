@@ -52,7 +52,7 @@ app.get('/emotion', function (req, res) {
   var limit = req.query.limit
   client.get('search/tweets', { q: 'from:' + user, count: limit }, function (error, tweets, response) {
     console.log(tweets);
-    if (tweets.statuses.length > 0) {
+    if (tweets == undefined || tweets.statuses.length > 0) {
       // Join tweets:
       var tweets_joined = tweets.statuses.filter(function (tweet) {
         return tweet.text.length > 10
@@ -78,6 +78,7 @@ app.get('/emotion', function (req, res) {
         }
       });
     }
+    res.send(JSON.stringify({error:"No tweets found!"}));
   });
 });
 

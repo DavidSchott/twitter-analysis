@@ -18,21 +18,26 @@ function checkRequest(userName, tweetLimit) {
         return false;
     }
     // Have userName and tweet, check users existence
-    $.get('/user',{ user: userName})
+    var prms = $.get('/user',{ user: userName})
         .done(function (data){
             data = JSON.parse(data);
             if (data.hasOwnProperty('errors')){
                 displayAlert("Code: "+data.errors[0].code + " " + data.errors[0].message);
                 return false;
             }
+            else{
             user = data;
+            return true;
+            }
         })
         .fail(function(xhr){
             console.log("Error fetching user",xhr);
             displayAlert("Connection error");
             return false;
         })
-    return true;
+    return $.when(prms).done(function (exists){
+        return exists;
+    })
 }
 
 function displayAlert(msg) {
@@ -46,11 +51,13 @@ function hideAlert() {
 function fetchTweetsEmotions(userName, tweetLimit) {
     if (checkRequest(userName, tweetLimit)) {
         hideAlert();
-        console.log("Analyzing " + tweetLimit + " tweets from " + userName);
+        console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit })
             .done(function (data) {
+                console.log(data);
                 tweetEmotions = JSON.parse(data);
-                visualizeEmotions(tweetEmotions);
+                if (!tweetEmotions.hasOwnProperty('error'))
+                    visualizeEmotions(tweetEmotions);
             })
             .fail(function (xhr) {
                 alert("Error fetching tweets from " + userName);
