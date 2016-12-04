@@ -18,11 +18,11 @@ var keyWords;
 // TODO: add validation of hashtags
 function checkRequest(userName, tweetLimit,hashTags,resolve,reject) {
     if (userName.length < 1) {
-        displayAlert('Username invalid');
+        reject('Username invalid');
         return false;
     }
     else if (tweetLimit.length <= 1 || tweetLimit > 100) {
-        displayAlert('Tweet Limit must be in the range 10 < x < 100.');
+        reject('Tweet Limit must be in the range 10 < x < 100.');
         return false;
     }
     var prms = $.get('/user',{ user: userName})
@@ -80,7 +80,6 @@ function fetchTweetsKeywords(userName,tweetLimit,hashTags){
     console.log("Fetching interesting keywords from " + userName + " tweets.");
      $.get('/keywords', { user: userName, limit: tweetLimit, tags:hashTags })
             .done(function (data) {
-                console.log(data);
                 keyWords = JSON.parse(data).keywords;
                 if (!keyWords.hasOwnProperty('error')){
                     visualizeKeywords(keyWords);
@@ -95,7 +94,7 @@ function fetchTweetsKeywords(userName,tweetLimit,hashTags){
 function visualizeKeywords(keywordsResponse){
     document.getElementById('keyword-chart').innerText = JSON.stringify(keywordsResponse, null,2);
     /*var data = google.visualization.arrayToDataTable([
-        ["Element", "Density", { role: "style" } ],
+        ["Keyword", "Density", { role: "style" } ],
         ["Copper", 8.94, "#b87333"],
         ["Silver", 10.49, "silver"],
         ["Gold", 19.30, "gold"],
@@ -125,13 +124,11 @@ function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
         console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit, tags:hashTags })
             .done(function (data) {
-                console.log(data);
                 tweetEmotions = JSON.parse(data);
                 if (!tweetEmotions.hasOwnProperty('error')){
                     visualizeEmotions(tweetEmotions);
                 }
 		tweets = tweetEmotions.tweets;
-		console.log(tweets);
             })
             .fail(function (xhr) {
                 alert("Error fetching emotions from " + userName);
