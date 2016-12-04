@@ -33,7 +33,9 @@ Use IBM's AlchemyLanguage sentiment/emotion analysis to visualize emotions of tw
 #### `/emotion`
 Sending a GET request with `user` & `limit` parameters set will return a JSON object describing emotions of users tweets.
 For example:
-`$ curl http://localhost:5000/emotion?user=daschott94&limit=10`
+```
+$ curl http://localhost:5000/emotion?user=daschott94&limit=10
+```
 will return the following JSON object:
 ```
 {
@@ -53,7 +55,9 @@ will return the following JSON object:
 #### `/user`
 Sending a GET request with `user` parameters set will return a JSON object with account details of user.
 For example:
-`$ curl http://localhost:5000/user?user=daschott94`
+```
+$ curl http://localhost:5000/user?user=daschott94
+```
 will return the following JSON object:
 ```
 {
