@@ -47,7 +47,7 @@ app.get('/', function (req, res) {
   });
 })
 
-app.get('/analyze', function(req,res){
+app.get('/emotion', function(req,res){
   var user = req.query.user
   var limit = req.query.limit
   client.get('search/tweets', {q: 'from:'+user, count:limit}, function(error, tweets, response) {
@@ -66,12 +66,13 @@ app.get('/analyze', function(req,res){
 
     alchemy_language.emotion(parameters, function (err, response) {
       if (err){
-        console.log('error:', err);
+        console.log('error:', err)
         err.tweets = tweets_joined
         res.send(JSON.stringify(err, null, 2));
       }
       else{
-        response.docEmotions.tweets = tweets_joined
+        response.docEmotions.userName = user
+        response.docEmotions.tweets = tweets_joined.split('\n')
         res.send(JSON.stringify(response.docEmotions, null, 2));
         }
     });
