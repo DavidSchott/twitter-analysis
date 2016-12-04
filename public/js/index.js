@@ -9,9 +9,12 @@ $(document).ready(function () {
 $('.results').hide();
     console.log("ready!");
 });
+// Globals
 google.charts.load('current', { 'packages': ['corechart'] });
 var user;
 var tweetEmotions;
+var keyWords;
+
 // TODO: add validation of hashtags
 function checkRequest(userName, tweetLimit,hashTags,resolve,reject) {
     if (userName.length < 1) {
@@ -74,11 +77,27 @@ function dispatchRequests(userName,tweetLimit,hashTags){
 
 function fetchTweetsKeywords(userName,tweetLimit,hashTags){
     console.log("Fetching interesting keywords from " + userName + " tweets.");
+     $.get('/keywords', { user: userName, limit: tweetLimit, tags:hashTags })
+            .done(function (data) {
+                console.log(data);
+                keyWords = JSON.parse(data).keywords;
+                if (!keyWords.hasOwnProperty('error')){
+                    visualizeKeywords(keyWords);
+                }
+            })
+            .fail(function (xhr) {
+                alert("Error fetching keywords from " + userName);
+                console.log(xhr);
+            });
+}
+
+function visualizeKeywords(keywordsResponse){
+    document.getElementById('keyword-chart').innerText = JSON.stringify(keywordsResponse, null,2);
 }
 
 function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
         console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
-        $.get('/emotion', { user: userName, limit: tweetLimit })
+        $.get('/emotion', { user: userName, limit: tweetLimit, tags:hashTags })
             .done(function (data) {
                 console.log(data);
                 tweetEmotions = JSON.parse(data);
@@ -87,7 +106,7 @@ function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
                 }
             })
             .fail(function (xhr) {
-                alert("Error fetching tweets from " + userName);
+                alert("Error fetching emotions from " + userName);
                 console.log(xhr);
             });
 }

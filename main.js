@@ -90,6 +90,44 @@ app.get('/user', function (req, res) {
   })
 })
 
+app.get('/keywords', function (req, res) {
+  var user = req.query.user
+  var limit = req.query.limit
+  var tags = req.query.tags
+  client.get('search/tweets', { q: 'from:' + user, count: limit }, function (error, tweets, response) {
+    console.log(tweets);
+    if (tweets == undefined || tweets.statuses.length > 0) {
+      // Join tweets:
+      var tweets_joined = tweets.statuses.filter(function (tweet) {
+        return tweet.text.length > 10
+      }).map(function (tweet) {
+        return tweet.text
+      }).join('\n');
+
+      //console.log("Analyzing tweets:\n" + tweets_joined);
+      var parameters = {
+        text: tweets_joined,
+        sentiment: 1,
+        maxRetrieve: 10
+      };
+
+      alchemy_language.keywords(parameters, function (err, response) {
+        if (err) {
+          console.log('error:', err)
+          err.tweets = tweets_joined
+          res.send(JSON.stringify(err, null, 2));
+        }
+        else {
+          response.userName = user
+          res.send(JSON.stringify(response, null, 2));
+        }
+      });
+    }else{
+        res.send(JSON.stringify({error:"No tweets found!"}));
+    }
+  });
+});
+
 app.listen(5000, function () {
   console.log('listening on port 5000!')
 })
