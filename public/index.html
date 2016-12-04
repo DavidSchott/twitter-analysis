@@ -29,8 +29,9 @@
                             <input type="text" placeholder="Twitter Username" id="user" name="user" class="form-control" required/>
                         </div>
                         <div style="margin-bottom: 25px" class="input-group">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-comment"></i></span>
-                        <input type="number" id="limit" name="limit" class="form-control" placeholder="# of Tweets" style="width: 150px" max="100" min="10" step="1"/>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-comment"></i></span>
+                            <input type="number" id="limit" name="limit" class="form-control" placeholder="# of Tweets" style="width: 150px" max="100"
+                                min="10" step="1" />
                         </div>
                         <div class="input-group">
                             <span class="input-group-addon" id="hash-addon">#</span>
@@ -55,23 +56,27 @@
         </div>
         <div class="row results">
             <div class="jumbotron col-md-12 tab-content" id="display">
-                <div role="tabpanel" id="emotion-chart" class="col-md-offset-1 col-md-10 piechart tab-pane"></div>
+                <div role="tabpanel" id="emotion-chart" class="col-md-offset-1 col-md-10 chart tab-pane">Loading...</div>
                 <div id="tweet-box" class="col-md-offset-1 col-md-10 tab-pane">
-		  <h3 id="tweets-heading"><h3>
-		  <p id="tweets"> </p>
-		</div>
+                    <h3 id="tweets-heading">
+                        <h3>
+                            <p id="tweets"> </p>
+                </div>
                 <div id="user-table" class="col-md-offset-1 col-md-10 tab-pane active">
-		  <img id="user-profile-pic" style="width:100px;height:100px;">
-		  <h3 id="user-name"></h3>
-		  <h4 id="user-screen-name"></h4>
-		  <p id="user-description"> </p>
-		  <br>
-		  # tweets: <p id="user-total-tweets"> </p>
-		  # followers: <p id="user-followers-count"> </p>
-		  # friends: <p id="user-friends-count"> </p>
-		  # favorites: <p id="user-favourites-count"> </p>
-		</div>
-                <div id="keyword-chart" class="col-md-offset-1 col-md-10 tab-pane">Keyword graph here</div>
+                    <img id="user-profile-pic" style="width:100px;height:100px;">
+                    <h3 id="user-name"></h3>
+                    <h4 id="user-screen-name"></h4>
+                    <p id="user-description"> </p>
+                    <br> # tweets:
+                    <p id="user-total-tweets"> </p>
+                    # followers:
+                    <p id="user-followers-count"> </p>
+                    # friends:
+                    <p id="user-friends-count"> </p>
+                    # favorites:
+                    <p id="user-favourites-count"> </p>
+                </div>
+                <div id="keyword-chart" class="col-md-offset-1 col-md-10 tab-pane">Loading...</div>
             </div>
         </div>
     </div>

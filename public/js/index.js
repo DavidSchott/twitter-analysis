@@ -59,7 +59,6 @@ function dispatchRequests(userName,tweetLimit,hashTags){
             }
         )
         p1.then(function(userData){
-            console.log(userData);
             // User exists
             hideAlert();
             insertUserInfo();
@@ -94,19 +93,36 @@ function fetchTweetsKeywords(userName,tweetLimit,hashTags){
 }
 
 function visualizeKeywords(keywordsResponse){
+    var dataArray = [["Keyword", "Sentiment Score",{ role: "style" } ]]; 
     keywordsResponse.map(function(keyObj){
+        // Take care of neutrals
         if (keyObj.sentiment.type == "neutral"){
             keyObj.sentiment.score="0.0"
         }
+        // TODO: Take care of mixed?
     })
-    document.getElementById('keyword-chart').innerText = JSON.stringify(keywordsResponse, null,2);
-    /*var data = google.visualization.arrayToDataTable([
-        ["Keyword", "Score", "Type",{ role: "style" } ],
-        ["Copper", 8.94, "#b87333"],
-        ["Silver", 10.49, "silver"],
-        ["Gold", 19.30, "gold"],
-        ["Platinum", 21.45, "color: #e5e4e2"]
-      ]);
+
+    keywordsResponse.map(function(keyObj){
+        var score = parseFloat(keyObj.sentiment.score);
+        // Add colors depending on score
+        if (score < 0.0){
+            keyObj.sentiment.color = 'red'//rgbToHex(parseInt(255.0 + 255.0 * score),0,0);
+            keyObj.sentiment.opacity = keyObj.sentiment.score * -1.0;
+        }
+        else{
+            keyObj.sentiment.color = 'blue'//rgbToHex(50,50,parseInt(255.0 * score));
+            keyObj.sentiment.opacity = keyObj.sentiment.score
+        }
+        dataArray.push([keyObj.text,
+        parseFloat(keyObj.sentiment.score),
+        //keyObj.sentiment.type,
+        'color: ' + keyObj.sentiment.color + '; ' +
+        'opacity: ' + keyObj.sentiment.opacity + ';'
+        ])
+    })
+    console.log(dataArray);
+    //document.getElementById('keyword-chart').innerText = JSON.stringify(keywordsResponse, null,2);
+    var data = google.visualization.arrayToDataTable(dataArray);
       var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
                        { calc: "stringify",
@@ -115,27 +131,25 @@ function visualizeKeywords(keywordsResponse){
                          role: "annotation" },
                        2]);
       var options = {
-        title: user +"'s top 10 keywords sentiments",
-        width: 600,
-        height: 400,
+        title: user.screen_name +"'s top 10 keywords sentiments",
+        //width: 600,
+        height: 600,
         bar: {groupWidth: "95%"},
         legend: { position: "none" },
       };
       var chart = new google.visualization.ColumnChart(document.getElementById("keyword-chart"));
-      chart.draw(view, options);*/
+      chart.draw(view, options);
 }
 
 function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
         console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit, tags:hashTags })
             .done(function (data) {
-                console.log(data);
                 tweetEmotions = JSON.parse(data);
                 if (!tweetEmotions.hasOwnProperty('error')){
                     visualizeEmotions(tweetEmotions);
                 }
 		tweets = tweetEmotions.tweets;
-		console.log(tweets);
 		insertTweets();
             })
             .fail(function (xhr) {
@@ -182,4 +196,15 @@ function insertTweets() {
     }
     document.getElementById("tweets-heading").innerHTML = user.name + "'s tweets:";
     document.getElementById("tweets").innerHTML = text;
+}
+
+
+// Color Ops:
+function componentToHex(c) {
+    var hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+}
+
+function rgbToHex(r, g, b) {
+    return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
