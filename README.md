@@ -3,7 +3,7 @@ Use IBM's AlchemyLanguage sentiment/emotion analysis to visualize emotions of tw
 
 ### Installation
 
-* `npm install && bower install`
+* `$ npm install && bower install`
 * Add bluemix.auth file with valid IBM Bluemix API key. Example:
 ```
 {

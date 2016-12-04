@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="css/index.css"/>
     <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Google Charts -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
 <div class="container">
+    <div class="row">
     <!-- Twitter Panel -->
     <div id="selectbox" style="margin-top:50px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-primary">
@@ -27,12 +30,16 @@
                     </div>
                     <div style="margin-top:10px" class="form-group">
                         <div class="col-sm-12 btn-group">
-                            <button type="button" value="Analyze!" class="btn btn-default" onclick="fetchTweetsResponse($('#user').val(),$('#limit').val())">Analyze!</button>
+                            <button type="button" value="Analyze!" class="btn btn-default" onclick="fetchTweetsEmotions($('#user').val(),$('#limit').val())">Analyze!</button>
                         </div>
                     </div>
             </div>
         </div>
     </div>
+    </div>
+    <div class="row">
+<div id="test" class="piechart"></div>
+</div>
 </div>
 </body>
 </html>
