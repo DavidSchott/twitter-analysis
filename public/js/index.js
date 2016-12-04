@@ -101,7 +101,6 @@ function visualizeKeywords(keywordsResponse){
         ["Gold", 19.30, "gold"],
         ["Platinum", 21.45, "color: #e5e4e2"]
       ]);
-
       var view = new google.visualization.DataView(data);
       view.setColumns([0, 1,
                        { calc: "stringify",
@@ -109,7 +108,6 @@ function visualizeKeywords(keywordsResponse){
                          type: "string",
                          role: "annotation" },
                        2]);
-
       var options = {
         title: user +"'s top 10 keywords sentiments",
         width: 600,
@@ -164,6 +162,7 @@ function insertUserInfo() {
     document.getElementById("user-name").innerHTML = user.name;
     document.getElementById("user-screen-name").innerHTML = "@" + user.screen_name;
     document.getElementById("user-description").innerHTML = user.description;
+    document.getElementById("user-total-tweets").innerHTML = user.statuses_count;
     document.getElementById("user-followers-count").innerHTML = user.followers_count;
     document.getElementById("user-friends-count").innerHTML = user.friends_count;
     document.getElementById("user-favourites-count").innerHTML = user.favourites_count;
