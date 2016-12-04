@@ -73,7 +73,7 @@ function dispatchRequests(userName,tweetLimit,hashTags){
 }
 
 function fetchTweetsKeywords(userName,tweetLimit,hashTags){
-    console.log("Fetching interesting keywords from " + userName + " tweets.");
+    console.log("Fetching interesting keywords from " + userName + "'s tweets.");
 }
 
 function fetchTweetsEmotions(userName, tweetLimit,hashTags) {
@@ -110,4 +110,14 @@ function visualizeEmotions(emotionsResponse) {
     var chart = new google.visualization.PieChart(document.getElementById('emotion-chart'));
 
     chart.draw(data, options);
+}
+
+function insertUserInfo() {
+    document.getElementById("user-profile-pic").src = user.profile_image_url;
+    document.getElementById("user-name").innerHTML = user.name;
+    document.getElementById("user-screen-name").innerHTML = "@" + user.screen_name;
+    document.getElementById("user-description").innerHTML = user.description;
+    document.getElementById("user-followers-count").innerHTML = user.followers_count;
+    document.getElementById("user-friends-count").innerHTML = user.friends_count;
+    document.getElementById("user-favourites-count").innerHTML = user.favourites_count;
 }
