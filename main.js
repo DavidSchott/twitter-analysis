@@ -77,8 +77,9 @@ app.get('/emotion', function (req, res) {
           res.send(JSON.stringify(response.docEmotions, null, 2));
         }
       });
+    }else{
+        res.send(JSON.stringify({error:"No tweets found!"}));
     }
-    res.send(JSON.stringify({error:"No tweets found!"}));
   });
 });
 
