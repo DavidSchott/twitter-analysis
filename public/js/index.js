@@ -63,6 +63,7 @@ function dispatchRequests(userName,tweetLimit,hashTags){
             // User exists
             hideAlert();
             insertUserInfo();
+            // TODO: Add another promise to fix graphs not being displayed?
             fetchTweetsEmotions(userName,tweetLimit,hashTags);
             fetchTweetsKeywords(userName,tweetLimit,hashTags);
             // Display results
@@ -92,9 +93,14 @@ function fetchTweetsKeywords(userName,tweetLimit,hashTags){
 }
 
 function visualizeKeywords(keywordsResponse){
+    keywordsResponse.map(function(keyObj){
+        if (keyObj.sentiment.type == "neutral"){
+            keyObj.sentiment.score="0.0"
+        }
+    })
     document.getElementById('keyword-chart').innerText = JSON.stringify(keywordsResponse, null,2);
     /*var data = google.visualization.arrayToDataTable([
-        ["Keyword", "Density", { role: "style" } ],
+        ["Keyword", "Score", "Type",{ role: "style" } ],
         ["Copper", 8.94, "#b87333"],
         ["Silver", 10.49, "silver"],
         ["Gold", 19.30, "gold"],
