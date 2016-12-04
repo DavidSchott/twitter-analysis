@@ -2,9 +2,13 @@
  * Created by schott on 02.12.16.
  */
 $(document).ready(function () {
-    google.charts.load('current', { 'packages': ['corechart'] });
+    $('#tabs a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
     console.log("ready!");
 });
+google.charts.load('current', { 'packages': ['corechart'] });
 var user;
 var tweetEmotions;
 
@@ -17,7 +21,7 @@ function checkRequest(userName, tweetLimit) {
         displayAlert('Tweet Limit must be in the range 10 < x < 100.');
         return false;
     }
-    // Have userName and tweet, check users existence
+    // TODO: THIS DOESN'T WORK! Have userName and tweet, check users existence
     var prms = $.get('/user',{ user: userName})
         .done(function (data){
             data = JSON.parse(data);
@@ -48,22 +52,47 @@ function hideAlert() {
     $('#error-alert').hide();
 }
 
-function fetchTweetsEmotions(userName, tweetLimit) {
+function dispatchRequests(userName,tweetLimit){
+        /*var p1 = new Promise(
+            function(resolve,reject){
+                
+            }
+        )
+        p1.then(function(val){
+            // User exists
+        })
+    .catch(
+        // Log the rejection reason
+        function(reason) {
+            console.log('Handle rejected promise ('+reason+') here.');
+        });*/
+
     if (checkRequest(userName, tweetLimit)) {
         hideAlert();
+        fetchTweetsEmotions(userName,tweetLimit);
+        fetchTweetsKeywords(userName,tweetLimit);
+    }
+    $('#tabs').show();
+}
+
+function fetchTweetsKeywords(userName,tweetLimit){
+    console.log("Fetching interesting keywords from " + userName + " tweets.");
+}
+
+function fetchTweetsEmotions(userName, tweetLimit) {
         console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
         $.get('/emotion', { user: userName, limit: tweetLimit })
             .done(function (data) {
                 console.log(data);
                 tweetEmotions = JSON.parse(data);
-                if (!tweetEmotions.hasOwnProperty('error'))
+                if (!tweetEmotions.hasOwnProperty('error')){
                     visualizeEmotions(tweetEmotions);
+                }
             })
             .fail(function (xhr) {
                 alert("Error fetching tweets from " + userName);
                 console.log(xhr);
             });
-    }
 }
 
 function visualizeEmotions(emotionsResponse) {

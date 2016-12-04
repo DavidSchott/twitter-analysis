@@ -31,7 +31,7 @@
                         </div>
                         <div style="margin-top:10px" class="form-group">
                             <div class="col-sm-12 btn-group">
-                                <button type="button" value="Analyze!" class="btn btn-default" onclick="fetchTweetsEmotions($('#user').val(),$('#limit').val())">Analyze!</button>
+                                <button type="button" value="Analyze!" class="btn btn-default" onclick="dispatchRequests($('#user').val(),$('#limit').val())">Analyze!</button>
                             </div>
                         </div>
                     </div>
@@ -39,16 +39,19 @@
             </div>
         </div>
         <div class="row">
-            <ul class="nav nav-pills">
-                <li role="presentation"><a href="#">User Information</a></li>
-                <li role="presentation"><a href="#emotion-chart">Tweets</a></li>
-                <li role="presentation" class="active"><a href="#">Emotions Analysis</a></li>
-                <li role="presentation"><a href="#">Keyword Sentiments</a></li>
+            <ul class="nav nav-tabs" role="tablist" id="tabs" hidden>
+                <li role="presentation"><a href="#user-table" aria-controls="user-table" role="tab" data-toggle="tab">User</a></li>
+                <li role="presentation"><a href="#tweet-box" aria-controls="tweet-box" role="tab" data-toggle="tab">Tweets</a></li>
+                <li role="presentation" class="active"><a href="#emotion-chart" aria-controls="emotion-chart" role="tab" data-toggle="tab">Emotions Analysis</a></li>
+                <li role="presentation"><a href="#keyword-chart" aria-controls="keyword-chart" role="tab" data-toggle="tab">Keyword Sentiments</a></li>
             </ul>
         </div>
         <div class="row">
-            <div class="jumbotron col-md-12">
-                <div id="emotion-chart" class="col-md-offset-1 col-md-10 piechart"></div>
+            <div class="jumbotron col-md-12 tab-content" id="display">
+                <div role="tabpanel" id="emotion-chart" class="col-md-offset-1 col-md-10 piechart tab-pane active"></div>
+                <div id="tweet-box" class="col-md-offset-1 col-md-10 tab-pane">Tweet-box HTML here</div>
+                <div id="user-table" class="col-md-offset-1 col-md-10 tab-pane">User Info here</div>
+                <div id="keyword-chart" class="col-md-offset-1 col-md-10 tab-pane">Keyword graph here</div>
             </div>
         </div>
     </div>
