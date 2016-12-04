@@ -44,6 +44,7 @@ function fetchTweetsEmotions(userName, tweetLimit) {
 }
 // TODO: How to get data?
 function visualizeEmotions(emotionsResponse) {
+    console.log("Visualizing",emotionsResponse);
     var data = google.visualization.arrayToDataTable([
         ['Emotion', 'Score'],
         ['Anger', parseFloat(emotionsResponse.anger)],

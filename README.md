@@ -24,6 +24,7 @@ Use IBM's AlchemyLanguage sentiment/emotion analysis to visualize emotions of tw
 ### Third-party docs
 * [Twitter Search API](https://dev.twitter.com/rest/public/search)
 * [Twitter GET request search](https://dev.twitter.com/rest/reference/get/search/tweets)
+* [Twitter show User](https://dev.twitter.com/rest/reference/get/users/show)
 * [Twitter npm module](https://www.npmjs.com/package/twitter)
 * [IBM AlchemyLanguage Emotion Analysis](http://www.ibm.com/watson/developercloud/alchemy-language/api/v1/?node#emotion_analysis)
 
@@ -46,6 +47,30 @@ will return the following JSON object:
     "I am doing wonderful. This is fantastic.",
     "What a beautiful day today"
   ]
+}
+```
+
+#### `/user`
+Sending a GET request with `user` parameters set will return a JSON object with account details of user.
+For example:
+`$ curl http://localhost:5000/user?user=daschott94`
+will return the following JSON object:
+```
+{
+  "id": 804796211286917100,
+  "id_str": "804796211286917121",
+  "name": "David Schott",
+  "screen_name": "daschott94",
+  "location": "",
+  "profile_location": null,
+  "description": "",
+  "url": null,
+  "entities": {
+    "description": {
+      "urls": []
+    }
+  }
+  ...
 }
 ```
 

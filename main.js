@@ -16,9 +16,9 @@ var credentials_alchemy = JSON.parse(fs.readFileSync('bluemix.auth', 'utf8'));  
 var alchemy_language = watson.alchemy_language(credentials_alchemy)
 
 // JSON parsing
-app.use(bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-    extended: true
+  extended: true
 }));
 
 // Routing Config
@@ -47,38 +47,46 @@ app.get('/', function (req, res) {
   });
 })
 
-app.get('/emotion', function(req,res){
+app.get('/emotion', function (req, res) {
   var user = req.query.user
   var limit = req.query.limit
-  client.get('search/tweets', {q: 'from:'+user, count:limit}, function(error, tweets, response) {
-    //console.log(tweets);
-    // Join tweets:
-    var tweets_joined = tweets.statuses.filter(function(tweet){
-      return tweet.text.length > 10
-    }).map(function(tweet){
-      return tweet.text
-    }).join('\n');
+  client.get('search/tweets', { q: 'from:' + user, count: limit }, function (error, tweets, response) {
+    console.log(tweets);
+    if (tweets.statuses.length > 0) {
+      // Join tweets:
+      var tweets_joined = tweets.statuses.filter(function (tweet) {
+        return tweet.text.length > 10
+      }).map(function (tweet) {
+        return tweet.text
+      }).join('\n');
 
-    console.log("Analyzing tweets:\n" + tweets_joined);
-    var parameters = {
-      text: tweets_joined
-    };
+      //console.log("Analyzing tweets:\n" + tweets_joined);
+      var parameters = {
+        text: tweets_joined
+      };
 
-    alchemy_language.emotion(parameters, function (err, response) {
-      if (err){
-        console.log('error:', err)
-        err.tweets = tweets_joined
-        res.send(JSON.stringify(err, null, 2));
-      }
-      else{
-        response.docEmotions.userName = user
-        response.docEmotions.tweets = tweets_joined.split('\n')
-        res.send(JSON.stringify(response.docEmotions, null, 2));
+      alchemy_language.emotion(parameters, function (err, response) {
+        if (err) {
+          console.log('error:', err)
+          err.tweets = tweets_joined
+          res.send(JSON.stringify(err, null, 2));
         }
-    });
-
+        else {
+          response.docEmotions.userName = user
+          response.docEmotions.tweets = tweets_joined.split('\n')
+          res.send(JSON.stringify(response.docEmotions, null, 2));
+        }
+      });
+    }
   });
 });
+
+app.get('/user', function (req, res) {
+  var user = req.query.user
+  client.get('users/show', { screen_name: user }, function (error, tweets, response) {
+    res.send(JSON.stringify(tweets,null,2));
+  })
+})
 
 app.listen(5000, function () {
   console.log('listening on port 5000!')
