@@ -151,6 +151,7 @@ function visualizeKeywords(keywordsResponse) {
     var options = {
         title: user.screen_name + "'s top 10 keywords sentiments",
         height: 600,
+        width: 900,
         bar: { groupWidth: "95%" },
         legend: { position: "none" },
     };
