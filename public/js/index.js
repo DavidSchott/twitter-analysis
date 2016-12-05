@@ -15,7 +15,7 @@ var user;
 var tweetEmotions;
 var keyWords;
 
-// TODO: add validation of hashtags
+
 function checkRequest(userName, tweetLimit, hashTags, resolve, reject) {
     if (userName.length < 1) {
         displayAlert('Username invalid');
@@ -54,7 +54,7 @@ function hideAlert() {
 
 function dispatchRequests(userName, tweetLimit, hashTags) {
     $('.loading').show();
-    
+    $('.results').hide();
     var p1 = new Promise(
         function (resolve, reject) {
             checkRequest(userName, tweetLimit, hashTags, resolve, reject);
@@ -64,7 +64,6 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         // User exists
         hideAlert();
         insertUserInfo();
-	$('.loading').hide();
         var tweetEmotionsPromise = new Promise((resolve, reject) => {
             fetchTweetsEmotions(userName, tweetLimit, hashTags, resolve, reject);
         });
@@ -78,6 +77,7 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
             visualizeKeywords(values[1]);
             // Display results
             $('.results').show();
+            $('.loading').hide();
         }).catch(
         function (reason) {
             console.log(reason);
