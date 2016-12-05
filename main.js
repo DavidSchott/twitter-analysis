@@ -128,7 +128,7 @@ app.get('/keywords', function (req, res) {
     }
   });
 });
-
-app.listen(5000, function () {
-  console.log('listening on port 5000!')
+var port = process.env.PORT || 8000
+app.listen(port, function () {
+  console.log('listening on port ' + port)
 })
