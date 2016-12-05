@@ -47,6 +47,7 @@ function checkRequest(userName, tweetLimit, hashTags, resolve, reject) {
 function displayAlert(msg) {
     $('#error-alert').html('<strong>' + msg + '</strong>');
     $('#error-alert').show();
+    $('.loading').hide();
 }
 function hideAlert() {
     $('#error-alert').hide();
