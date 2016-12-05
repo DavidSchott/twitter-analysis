@@ -94,8 +94,9 @@ function fetchTweetsKeywords(userName, tweetLimit, hashTags,resolve,reject) {
     console.log("Fetching interesting keywords from " + userName + " tweets.");
     $.get('/keywords', { user: userName, limit: tweetLimit, tags: hashTags })
         .done(function (data) {
-            keyWords = JSON.parse(data).keywords;
-            if (!keyWords.hasOwnProperty('error')) {
+            data = JSON.parse(data);
+            if (!data.hasOwnProperty('error')) {
+                keyWords = data.keywords
                 resolve(keyWords);
                 //visualizeKeywords(keyWords);
             }
@@ -170,7 +171,7 @@ function fetchTweetsEmotions(userName, tweetLimit, hashTags,resolve,reject) {
                 resolve(tweetEmotions);
             }
             else{
-                displayAlert("Could not fetching emotions from " + userName);
+                displayAlert("Could not fetch emotions from " + userName);
             }
         })
         .fail(function (xhr) {
