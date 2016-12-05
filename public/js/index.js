@@ -53,6 +53,8 @@ function hideAlert() {
 }
 
 function dispatchRequests(userName, tweetLimit, hashTags) {
+    $('.loading').show();
+    
     var p1 = new Promise(
         function (resolve, reject) {
             checkRequest(userName, tweetLimit, hashTags, resolve, reject);
@@ -62,6 +64,7 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         // User exists
         hideAlert();
         insertUserInfo();
+	$('.loading').hide();
         var tweetEmotionsPromise = new Promise((resolve, reject) => {
             fetchTweetsEmotions(userName, tweetLimit, hashTags, resolve, reject);
         });
@@ -232,3 +235,11 @@ function componentToHex(c) {
 function rgbToHex(r, g, b) {
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
+
+var texts = ["Loading.", "Loading..", "Loading..."];
+var count = 0;
+function changeText() {
+    $("#loading-dots").text(texts[count]);
+    count < 3 ? count++ : count = 0;
+}
+setInterval(changeText, 500);
