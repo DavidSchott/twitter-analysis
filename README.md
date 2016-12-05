@@ -3,7 +3,7 @@ Use IBM's AlchemyLanguage sentiment/emotion analysis to visualize emotions of tw
 
 ### Installation
 
-* `$ npm install && bower install`
+* `$ npm install`
 * Add bluemix.auth file with valid IBM Bluemix API key. Example:
 ```
 {
@@ -108,69 +108,7 @@ will return the following JSON object:
 },
 "text": "Saturday Night Live"
 },
-{
-"relevance": "0.857764",
-"sentiment": {
-"score": "-0.725706",
-"type": "negative"
-},
-"text": "recount suit"
-},
-{
-"relevance": "0.851471",
-"sentiment": {
-"score": "-0.725706",
-"type": "negative"
-},
-"text": "Wisconsin recount"
-},
-{
-"relevance": "0.850268",
-"sentiment": {
-"score": "0.367373",
-"type": "positive"
-},
-"text": "......"
-},
-{
-"relevance": "0.807962",
-"sentiment": {
-"score": "-0.779139",
-"type": "negative"
-},
-"text": "expensive mistake"
-},
-{
-"relevance": "0.800318",
-"sentiment": {
-"score": "-0.677708",
-"type": "negative"
-},
-"text": "Stein scam"
-},
-{
-"relevance": "0.767954",
-"sentiment": {
-"score": "-0.725706",
-"type": "negative"
-},
-"text": "Green Party"
-},
-{
-"relevance": "0.747308",
-"sentiment": {
-"score": "-0.849133",
-"type": "negative"
-},
-"text": "Baldwin impersonation"
-},
-{
-"relevance": "0.738616",
-"sentiment": {
-"type": "neutral"
-},
-"text": "UNITED STATES"
-}
+...
 ],
 "userName": "realDonaldTrump"
 }
@@ -178,4 +116,4 @@ will return the following JSON object:
 
 ### Launch
 
-* `$ npm start` - starts server on port 5000.
+* `$ npm start` - starts server on port 8000.
