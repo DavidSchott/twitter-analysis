@@ -50,7 +50,8 @@ app.get('/', function (req, res) {
 app.get('/emotion', function (req, res) {
   var user = req.query.user
   var limit = req.query.limit
-  client.get('search/tweets', { q: 'from:' + user, count: limit }, function (error, tweets, response) {
+  var tags = req.query.tags
+  client.get('search/tweets', { q: 'from:' + user + " " + tags, count: limit }, function (error, tweets, response) {
     console.log(tweets);
     if (tweets == undefined || tweets.statuses.length > 0) {
       // Join tweets:
@@ -94,7 +95,7 @@ app.get('/keywords', function (req, res) {
   var user = req.query.user
   var limit = req.query.limit
   var tags = req.query.tags
-  client.get('search/tweets', { q: 'from:' + user, count: limit }, function (error, tweets, response) {
+  client.get('search/tweets', { q: 'from:' + user+" " + tags, count: limit }, function (error, tweets, response) {
     console.log(tweets);
     if (tweets == undefined || tweets.statuses.length > 0) {
       // Join tweets:

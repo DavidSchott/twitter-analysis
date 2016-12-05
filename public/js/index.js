@@ -68,9 +68,6 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         var tweetKeywordsPromise = new Promise((resolve, reject) => {
             fetchTweetsKeywords(userName, tweetLimit, hashTags, resolve, reject);
         });
-        // TODO: Add another promise to fix graphs not being displayed?
-        //fetchTweetsEmotions(userName, tweetLimit, hashTags,resolve,reject);
-        //fetchTweetsKeywords(userName, tweetLimit, hashTags,resolve,reject);
         Promise.all([tweetEmotionsPromise,tweetKeywordsPromise]).then(values => {
             console.log(values);
             insertTweets(tweetEmotions.tweets);
@@ -101,6 +98,9 @@ function fetchTweetsKeywords(userName, tweetLimit, hashTags,resolve,reject) {
             if (!keyWords.hasOwnProperty('error')) {
                 resolve(keyWords);
                 //visualizeKeywords(keyWords);
+            }
+            else{
+                displayAlert("Could not fetch keywords from " + userName);
             }
         })
         .fail(function (xhr) {
@@ -168,7 +168,9 @@ function fetchTweetsEmotions(userName, tweetLimit, hashTags,resolve,reject) {
                 //visualizeEmotions(tweetEmotions);
                 //insertTweets(tweetEmotions.tweets);
                 resolve(tweetEmotions);
-
+            }
+            else{
+                displayAlert("Could not fetching emotions from " + userName);
             }
         })
         .fail(function (xhr) {
