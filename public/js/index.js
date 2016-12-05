@@ -188,7 +188,9 @@ function visualizeEmotions(emotionsResponse) {
     ]);
 
     var options = {
-        title: 'Emotion Analysis of ' + emotionsResponse.userName + ' tweets'
+        'title':'Emotion Analysis of ' + emotionsResponse.userName + ' tweets',
+	'width':600,
+	'height':600
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('emotion-chart'));
