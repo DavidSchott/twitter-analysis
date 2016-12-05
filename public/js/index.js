@@ -190,7 +190,7 @@ function visualizeEmotions(emotionsResponse) {
 
     var options = {
         'title':'Emotion Analysis of ' + emotionsResponse.userName + ' tweets',
-	'width':600,
+	'width':900,
 	'height':600
     };
 
