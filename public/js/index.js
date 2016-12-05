@@ -62,6 +62,9 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         // User exists
         hideAlert();
         insertUserInfo();
+        /*var p3 = new Promise((resolve, reject) => {
+            setTimeout(resolve, 100, "foo");
+        });*/
         // TODO: Add another promise to fix graphs not being displayed?
         fetchTweetsEmotions(userName, tweetLimit, hashTags);
         fetchTweetsKeywords(userName, tweetLimit, hashTags);
@@ -147,8 +150,8 @@ function fetchTweetsEmotions(userName, tweetLimit, hashTags) {
             tweetEmotions = JSON.parse(data);
             if (!tweetEmotions.hasOwnProperty('error')) {
                 visualizeEmotions(tweetEmotions);
+                insertTweets(tweetEmotions.tweets);
             }
-            insertTweets(tweetEmotions.tweets);
         })
         .fail(function (xhr) {
             alert("Error fetching emotions from " + userName);
