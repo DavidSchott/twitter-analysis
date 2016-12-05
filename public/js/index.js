@@ -62,14 +62,28 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         // User exists
         hideAlert();
         insertUserInfo();
-        /*var p3 = new Promise((resolve, reject) => {
-            setTimeout(resolve, 100, "foo");
-        });*/
+        var tweetEmotionsPromise = new Promise((resolve, reject) => {
+            fetchTweetsEmotions(userName, tweetLimit, hashTags, resolve, reject);
+        });
+        var tweetKeywordsPromise = new Promise((resolve, reject) => {
+            fetchTweetsKeywords(userName, tweetLimit, hashTags, resolve, reject);
+        });
         // TODO: Add another promise to fix graphs not being displayed?
-        fetchTweetsEmotions(userName, tweetLimit, hashTags);
-        fetchTweetsKeywords(userName, tweetLimit, hashTags);
-        // Display results
-        $('.results').show();
+        //fetchTweetsEmotions(userName, tweetLimit, hashTags,resolve,reject);
+        //fetchTweetsKeywords(userName, tweetLimit, hashTags,resolve,reject);
+        Promise.all([tweetEmotionsPromise,tweetKeywordsPromise]).then(values => {
+            console.log(values);
+            insertTweets(tweetEmotions.tweets);
+            visualizeEmotions(values[0]);
+            visualizeKeywords(values[1]);
+            // Display results
+            $('.results').show();
+        }).catch(
+        function (reason) {
+            console.log(reason);
+            displayAlert(reason);
+        });
+
     })
         .catch(
         // Log the rejection reason (user doesn't exist')
@@ -79,17 +93,18 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         });
 }
 
-function fetchTweetsKeywords(userName, tweetLimit, hashTags) {
+function fetchTweetsKeywords(userName, tweetLimit, hashTags,resolve,reject) {
     console.log("Fetching interesting keywords from " + userName + " tweets.");
     $.get('/keywords', { user: userName, limit: tweetLimit, tags: hashTags })
         .done(function (data) {
             keyWords = JSON.parse(data).keywords;
             if (!keyWords.hasOwnProperty('error')) {
-                visualizeKeywords(keyWords);
+                resolve(keyWords);
+                //visualizeKeywords(keyWords);
             }
         })
         .fail(function (xhr) {
-            alert("Error fetching keywords from " + userName);
+            reject("Error fetching keywords from " + userName);
             console.log(xhr);
         });
 }
@@ -143,18 +158,20 @@ function visualizeKeywords(keywordsResponse) {
     chart.draw(view, options);
 }
 
-function fetchTweetsEmotions(userName, tweetLimit, hashTags) {
+function fetchTweetsEmotions(userName, tweetLimit, hashTags,resolve,reject) {
     console.log("Analyzing " + tweetLimit + " emotional tweets from " + userName);
     $.get('/emotion', { user: userName, limit: tweetLimit, tags: hashTags })
         .done(function (data) {
             tweetEmotions = JSON.parse(data);
             if (!tweetEmotions.hasOwnProperty('error')) {
-                visualizeEmotions(tweetEmotions);
-                insertTweets(tweetEmotions.tweets);
+                //visualizeEmotions(tweetEmotions);
+                //insertTweets(tweetEmotions.tweets);
+                resolve(tweetEmotions);
+
             }
         })
         .fail(function (xhr) {
-            alert("Error fetching emotions from " + userName);
+            reject("Error fetching emotions from " + userName);
             console.log(xhr);
         });
 }
