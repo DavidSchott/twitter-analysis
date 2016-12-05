@@ -62,14 +62,11 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         // User exists
         hideAlert();
         insertUserInfo();
-        /*var p3 = new Promise((resolve, reject) => {
-            setTimeout(resolve, 100, "foo");
-        });*/
         // TODO: Add another promise to fix graphs not being displayed?
         fetchTweetsEmotions(userName, tweetLimit, hashTags);
         fetchTweetsKeywords(userName, tweetLimit, hashTags);
         // Display results
-        $('.results').show();
+        $(".results").show();
     })
         .catch(
         // Log the rejection reason (user doesn't exist')
@@ -150,8 +147,8 @@ function fetchTweetsEmotions(userName, tweetLimit, hashTags) {
             tweetEmotions = JSON.parse(data);
             if (!tweetEmotions.hasOwnProperty('error')) {
                 visualizeEmotions(tweetEmotions);
-                insertTweets(tweetEmotions.tweets);
             }
+            insertTweets(tweetEmotions.tweets);
         })
         .fail(function (xhr) {
             alert("Error fetching emotions from " + userName);
@@ -171,7 +168,9 @@ function visualizeEmotions(emotionsResponse) {
     ]);
 
     var options = {
-        title: 'Emotion Analysis of ' + emotionsResponse.userName + ' tweets'
+        'title':'Emotion Analysis of ' + emotionsResponse.userName + ' tweets',
+	'width':600,
+	'height':600
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('emotion-chart'));
