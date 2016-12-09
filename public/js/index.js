@@ -28,6 +28,7 @@ function checkRequest(userName, tweetLimit, hashTags, resolve, reject) {
     var prms = $.get('/user', { user: userName })
         .done(function (data) {
             data = JSON.parse(data);
+	    console.log("data! ", data);
             if (data.hasOwnProperty('errors')) {
                 reject("Code: " + data.errors[0].code + " " + data.errors[0].message);
             }
@@ -68,9 +69,11 @@ function dispatchRequests(userName, tweetLimit, hashTags) {
         var tweetEmotionsPromise = new Promise((resolve, reject) => {
             fetchTweetsEmotions(userName, tweetLimit, hashTags, resolve, reject);
         });
+	console.log("emotions promise! ", tweetEmotionsPromise);
         var tweetKeywordsPromise = new Promise((resolve, reject) => {
             fetchTweetsKeywords(userName, tweetLimit, hashTags, resolve, reject);
         });
+	console.log("keywords! ", tweetKeywordsPromise);
         Promise.all([tweetEmotionsPromise,tweetKeywordsPromise]).then(values => {
             console.log(values);
             insertTweets(tweetEmotions.tweets);
@@ -159,6 +162,7 @@ function visualizeKeywords(keywordsResponse) {
         width: 900,
         bar: { groupWidth: "95%" },
         legend: { position: "none" },
+	hAxis: {slantedText: true}
     };
     var chart = new google.visualization.ColumnChart(document.getElementById("keyword-chart"));
     chart.draw(view, options);
@@ -169,6 +173,7 @@ function fetchTweetsEmotions(userName, tweetLimit, hashTags,resolve,reject) {
     $.get('/emotion', { user: userName, limit: tweetLimit, tags: hashTags })
         .done(function (data) {
             tweetEmotions = JSON.parse(data);
+	    //console.log("emotions!", tweetEmotions);
             if (!tweetEmotions.hasOwnProperty('error')) {
                 //visualizeEmotions(tweetEmotions);
                 //insertTweets(tweetEmotions.tweets);
@@ -198,7 +203,7 @@ function visualizeEmotions(emotionsResponse) {
     var options = {
         'title':'Emotion Analysis of ' + emotionsResponse.userName + ' tweets',
 	'width':900,
-	'height':600
+	'height':600,
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('emotion-chart'));
