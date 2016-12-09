@@ -132,11 +132,11 @@ function visualizeKeywords(keywordsResponse) {
         // Add colors/opacities depending on score
         if (score < 0.0) {
             keyObj.sentiment.color = 'red'//rgbToHex(parseInt(255.0 + 255.0 * score),0,0);
-            keyObj.sentiment.opacity = keyObj.sentiment.score * -1.0;
+            keyObj.sentiment.opacity = keyObj.relevance;
         }
         else {
             keyObj.sentiment.color = 'blue'//rgbToHex(50,50,parseInt(255.0 * score));
-            keyObj.sentiment.opacity = keyObj.sentiment.score
+            keyObj.sentiment.opacity = keyObj.relevance;
         }
         // Populate dataArray
         dataArray.push([keyObj.text,
