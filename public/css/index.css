@@ -1,3 +1,10 @@
+body {
+    background: url(https://s12.postimg.org/xvq63gq7h/abstraction_fully_connected_aymcreations_balls_c.jpg) no-repeat center center fixed; /* Keep external for Heroku */
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
 .chart{
     /*width: 900px;*/
     height: 600px;

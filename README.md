@@ -1,5 +1,6 @@
 # portfolio3
 Use IBM's AlchemyLanguage sentiment/emotion analysis to visualize emotions of tweets.
+A fully functioning version can be accessed [here.](http://radiant-woodland-82478.herokuapp.com/)
 
 ### Installation
 
